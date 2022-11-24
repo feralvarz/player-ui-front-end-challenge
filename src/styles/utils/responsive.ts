@@ -1,5 +1,7 @@
 import { keysOf } from '$/utils/keysOf';
 
+export const rootFontSize = 16;
+
 export const sizes = {
   mobile: 480,
   tabletPortrait: 767,
@@ -22,3 +24,5 @@ export const from = keysOf(sizes).reduce(
   }),
   {},
 );
+
+export const pxToRem = (value: number) => `${value / rootFontSize}rem`;
