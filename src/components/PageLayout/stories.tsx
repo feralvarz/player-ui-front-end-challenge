@@ -15,7 +15,11 @@ const Template: Story<PageLayoutProps> = (args) => (
     <Text tag="h1" variant="title1">
       Good morning!
     </Text>
-    <Separator />
+    <Separator
+      spaceBlockStart="3rem"
+      spaceBlockEnd="3rem"
+      showDecoration={true}
+    />
   </PageLayout>
 );
 

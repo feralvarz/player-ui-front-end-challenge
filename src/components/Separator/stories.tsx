@@ -7,6 +7,7 @@ export default {
   component: Separator,
   title: 'Core/Separator',
   args: {
+    showDecoration: true,
     spaceBlockStart: '3rem',
     spaceBlockEnd: '3rem',
   },

@@ -34,7 +34,7 @@ export const SideMenu = ({ className }: SideMenuProps) => {
           </Text>
         </UserInfo>
       </UserInfoContainer>
-      <Separator spaceBlockStart="0" spaceBlockEnd="1rem" />
+      <Separator showDecoration={true} spaceBlockEnd="1rem" />
       <MenuNav>
         <MenuList>
           {Object.values(MAIN_MENU_LINKS).map(
