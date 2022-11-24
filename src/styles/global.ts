@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
-    font-size: ${rootFontSize}
+    font-size: ${rootFontSize}px;
   }
   #__next {
     display: flex;
