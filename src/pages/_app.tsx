@@ -1,4 +1,3 @@
-import '$/styles/fonts.css';
 import { Layout } from '$/containers/Layouts';
 import GlobalStyle from '$/styles/global';
 import theme from '$/styles/themes';
