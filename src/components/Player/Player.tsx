@@ -3,7 +3,7 @@ import Play from '$/assets/icons/play-large.svg';
 import Previous from '$/assets/icons/previous.svg';
 import { TrackProgress } from '$/components/TrackProgress/TrackProgress';
 import { TrackThumbnail } from '$/components/TrackThumbnail/TrackThumbnail';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import {
   Control,
@@ -16,9 +16,20 @@ import {
 
 const Player: FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [autoHide, setAutoHide] = useState(false);
+
+  useEffect(() => {
+    if (isPlaying) {
+      setAutoHide(true);
+      const autoHideTimeout = setTimeout(() => {
+        setAutoHide(false);
+        clearTimeout(autoHideTimeout);
+      }, 5000);
+    }
+  }, [isPlaying]);
 
   return (
-    <HoverTrap>
+    <HoverTrap active={autoHide}>
       <PlayerContainer>
         <TrackThumbnail
           trackName="One"
