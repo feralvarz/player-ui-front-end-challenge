@@ -1,6 +1,7 @@
 import Pause from '$/assets/icons/pause.svg';
 import Play from '$/assets/icons/play-large.svg';
 import Previous from '$/assets/icons/previous.svg';
+import { TrackProgress } from '$/components/TrackProgress/TrackProgress';
 import { TrackThumbnail } from '$/components/TrackThumbnail/TrackThumbnail';
 import { FC, useState } from 'react';
 
@@ -30,7 +31,7 @@ const Player: FC = () => {
           <Previous />
         </Control>
       </PlayerControls>
-      <h2>Three</h2>
+      <TrackProgress current="3:20" duration="15:22" />
     </PlayerContainer>
   );
 };

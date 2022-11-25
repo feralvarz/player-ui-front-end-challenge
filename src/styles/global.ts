@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
   #__next {
     display: flex;
     min-height: 100vh;
+    min-width: 790px;
 
     > * {
       flex: 1;

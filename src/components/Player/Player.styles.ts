@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
 export const PlayerContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  min-width: 790px;
+  gap: 13.5%;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 16px 24px;
   position: absolute;
@@ -13,11 +15,6 @@ export const PlayerContainer = styled.div`
   background: ${({ theme }) => theme.color.grayscale900};
   box-shadow: 0 -2px 8px rgba(34, 34, 61, 0.1);
   border-radius: 16px 16px 0 0;
-
-  h2 {
-    background: coral;
-    color: white;
-  }
 `;
 
 export const PlayerControls = styled.div`
@@ -25,6 +22,8 @@ export const PlayerControls = styled.div`
   grid-template-columns: repeat(3, auto);
   place-items: center;
   gap: 8px;
+  max-width: 136px;
+  margin: 0 auto;
 `;
 
 export const Control = styled.button<{ solid?: boolean; flip?: boolean }>`
