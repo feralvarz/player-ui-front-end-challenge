@@ -3,8 +3,9 @@ import Play from '$/assets/icons/play-large.svg';
 import Previous from '$/assets/icons/previous.svg';
 import { TrackProgress } from '$/components/TrackProgress/TrackProgress';
 import { TrackThumbnail } from '$/components/TrackThumbnail/TrackThumbnail';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 
+import { usePlayer } from './Player.logic';
 import {
   Control,
   HoverTrap,
@@ -12,24 +13,26 @@ import {
   PlayerControls,
 } from './Player.styles';
 
-// type PlayerProps  = {}
-
 const Player: FC = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [autoHide, setAutoHide] = useState(false);
-
-  useEffect(() => {
-    if (isPlaying) {
-      setAutoHide(true);
-      const autoHideTimeout = setTimeout(() => {
-        setAutoHide(false);
-        clearTimeout(autoHideTimeout);
-      }, 5000);
-    }
-  }, [isPlaying]);
+  const {
+    audioMeta,
+    audioPlayerRef,
+    autoHide,
+    handlers,
+    isPlaying,
+    setIsPlaying,
+  } = usePlayer();
 
   return (
     <HoverTrap active={autoHide}>
+      <audio
+        id="audio"
+        ref={audioPlayerRef}
+        onTimeUpdate={handlers.handleOnUpdateTime}
+      >
+        <source src="https://d2s139ebbsksc4.cloudfront.net/AcousticRock.mp3" />
+        Your browser does not support the <code>audio</code> element.
+      </audio>
       <PlayerContainer>
         <TrackThumbnail
           trackName="One"
@@ -48,7 +51,10 @@ const Player: FC = () => {
             <Previous />
           </Control>
         </PlayerControls>
-        <TrackProgress current="3:20" duration="15:22" />
+        <TrackProgress
+          trackStatus={audioMeta}
+          onSlideChange={handlers.updateCurrentTime}
+        />
       </PlayerContainer>
     </HoverTrap>
   );

@@ -1,23 +1,28 @@
+import { AudioMeta } from '$/components/Player/Player.types';
 import { ProgressSlider } from '$/components/ProgressSlider/ProgressSlider';
 import { Text } from '$/components/Text';
+import { timeFormatter } from '$/utils/formatters/timeFormatter';
 import { FC } from 'react';
 
 import { TrackProgressContainer } from './TrackProgress.styles';
 
 type TrackProgressProps = {
-  current: string;
-  duration: string;
+  trackStatus: AudioMeta;
+  onSlideChange: (e: [number]) => void;
 };
 
-export const TrackProgress: FC<TrackProgressProps> = () => (
+export const TrackProgress: FC<TrackProgressProps> = ({
+  trackStatus,
+  onSlideChange,
+}) => (
   <TrackProgressContainer>
-    <Text tag="span" variant="caption">
-      15:22
+    <Text tag="span" variant="caption" className="timeLabel">
+      {timeFormatter(trackStatus?.current)}
     </Text>
-    <ProgressSlider />
+    <ProgressSlider trackStatus={trackStatus} onValueChange={onSlideChange} />
 
-    <Text tag="span" variant="caption">
-      03:55
+    <Text tag="span" variant="caption" className="timeLabel">
+      {timeFormatter(trackStatus?.duration)}
     </Text>
   </TrackProgressContainer>
 );

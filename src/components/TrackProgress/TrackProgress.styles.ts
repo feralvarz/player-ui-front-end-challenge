@@ -8,4 +8,8 @@ export const TrackProgressContainer = styled.div`
   margin-left: auto;
   grid-template-columns: auto 1fr auto;
   align-items: center;
+
+  .timeLabel {
+    min-width: 30px;
+  }
 `;
