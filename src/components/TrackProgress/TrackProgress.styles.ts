@@ -8,8 +8,4 @@ export const TrackProgressContainer = styled.div`
   margin-left: auto;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-
-  progress {
-    width: 100%;
-  }
 `;

@@ -1,7 +1,8 @@
-import { FC } from 'react';
-import { TrackProgressContainer } from './TrackProgress.styles';
-
+import { ProgressSlider } from '$/components/ProgressSlider/ProgressSlider';
 import { Text } from '$/components/Text';
+import { FC } from 'react';
+
+import { TrackProgressContainer } from './TrackProgress.styles';
 
 type TrackProgressProps = {
   current: string;
@@ -13,7 +14,7 @@ export const TrackProgress: FC<TrackProgressProps> = () => (
     <Text tag="span" variant="caption">
       15:22
     </Text>
-    <progress value="32" max="100" />
+    <ProgressSlider />
 
     <Text tag="span" variant="caption">
       03:55

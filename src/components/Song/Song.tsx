@@ -8,8 +8,8 @@ import { FC, useState } from 'react';
 
 import {
   AlbumArt,
-  ContentGrid,
   CardFooter,
+  ContentGrid,
   FavoriteSelector,
   MultilineEllipsis,
   PlayButton,
