@@ -1,3 +1,4 @@
+import Player from '$/components/Player/Player';
 import { Separator } from '$/components/Separator';
 import { SongItem } from '$/components/Song/Song';
 import { Text } from '$/components/Text';
@@ -108,6 +109,7 @@ function HomeView(): JSX.Element {
           <SongItem key={s.id} song={s} />
         ))}
       </SongsContainer>
+      <Player />
     </Container>
   );
 }
