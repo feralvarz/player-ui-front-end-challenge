@@ -11,10 +11,36 @@ export const PlayerContainer = styled.div`
   width: 100%;
   height: 80px;
   left: 0;
-  bottom: 0;
+  bottom: -80px;
   background: ${({ theme }) => theme.color.grayscale900};
   box-shadow: 0 -2px 8px rgba(34, 34, 61, 0.1);
   border-radius: 16px 16px 0 0;
+  transition: bottom 150ms ease-out 500ms;
+  /* Transition for player controls on mouse leave */
+  & > * {
+    opacity: 0;
+    transition: opacity 150ms linear 400ms;
+  }
+`;
+
+export const HoverTrap = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  &:hover {
+    ${PlayerContainer} {
+      bottom: 0;
+      transition: bottom 100ms linear;
+      /* Transition for player controls on mouse enter */
+      & > * {
+        opacity: 1;
+        transition: opacity 250ms linear 150ms;
+      }
+    }
+  }
 `;
 
 export const PlayerControls = styled.div`
