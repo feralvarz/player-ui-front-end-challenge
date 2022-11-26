@@ -1,3 +1,5 @@
+import { useSongs } from '$/apollo/hooks/useSongs';
+import ClientOnly from '$/components/ClientOnly/ClientOnly';
 import Player from '$/components/Player/Player';
 import { Separator } from '$/components/Separator';
 import { SongItem } from '$/components/Song/Song';
@@ -92,6 +94,15 @@ const response: SongResponse = {
 };
 
 function HomeView(): JSX.Element {
+  const { songs } = useSongs({
+    search: '',
+    sort: { order: 'ASC' },
+    pagination: {
+      offset: 0,
+      limit: 10,
+    },
+  });
+
   return (
     <Container>
       <SongsHeader>
@@ -104,11 +115,13 @@ function HomeView(): JSX.Element {
           Featured songs
         </Text>
       </SongsHeader>
-      <SongsContainer>
-        {response.data.songs.songs.map((s) => (
-          <SongItem key={s.id} song={s} />
-        ))}
-      </SongsContainer>
+      <ClientOnly>
+        <SongsContainer>
+          {songs.map((s) => (
+            <SongItem key={s.id} song={s} />
+          ))}
+        </SongsContainer>
+      </ClientOnly>
       <Player />
     </Container>
   );
