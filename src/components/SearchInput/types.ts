@@ -1,7 +1,7 @@
 import type { KeyboardEventHandler } from 'react';
 
-export type SearchInputProps = {
-  placeholder?: string;
-  className?: string;
-  onKeyDown: KeyboardEventHandler<HTMLInputElement>;
+export type SearchInputProps = Partial<HTMLInputElement> & {
+  label?: string;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+  onKeyUp?: KeyboardEventHandler<HTMLInputElement>;
 };

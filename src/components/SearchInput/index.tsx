@@ -3,19 +3,15 @@ import type { FC } from 'react';
 import { Container, Input, SearchLineIcon } from './styles';
 import { SearchInputProps } from './types';
 
-export const SearchInput: FC<SearchInputProps> = ({
-  placeholder,
-  className,
-  onKeyDown,
-}) => (
-  <Container className={className}>
+export const SearchInput: FC<SearchInputProps> = (props) => (
+  <Container className={props?.className || ''}>
     <SearchLineIcon />
     <Input
-      name="search"
-      label="search"
+      name={props.name || 'generic-input'}
+      label={props?.label || 'search'}
       hideLabel={true}
-      placeholder={placeholder}
-      onKeyDown={onKeyDown}
+      placeholder={props?.placeholder}
+      onKeyUp={props?.onKeyUp}
     />
   </Container>
 );

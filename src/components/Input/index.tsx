@@ -18,7 +18,6 @@ export const Input = React.forwardRef<HTMLInputElement, Props>(
         id={name}
         name={name}
         disabled={disabled}
-        onKeyDown={props?.onKeyDown}
       />
     </Container>
   ),
