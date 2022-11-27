@@ -3,7 +3,7 @@ import { Song } from '$/models/Song/Song.types';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';
 
-type SongsQueryVariables = {
+export type SongsQueryVariables = {
   pagination: {
     offset: number;
     limit: number;
@@ -28,6 +28,7 @@ export const useSongs = (input: SongsQueryVariables) => {
     refetch: refetchSongs,
   } = useQuery<SongsQueryResponse, SongsQueryVariables>(SONGS_QUERY, {
     variables: input,
+    nextFetchPolicy: 'cache-only',
   });
 
   const normalizeSong = useMemo(() => data?.songs.songs || [], [data]);

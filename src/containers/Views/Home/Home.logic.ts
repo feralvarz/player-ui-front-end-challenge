@@ -1,39 +1,27 @@
-import { useSongs } from '$/apollo/hooks/useSongs';
+import { SongsQueryVariables, useSongs } from '$/apollo/hooks/useSongs';
 import { useCallback } from 'react';
 import type { KeyboardEvent } from 'react';
 
+const defaultVariables: SongsQueryVariables = {
+  search: '',
+  sort: { order: 'ASC' },
+  pagination: {
+    offset: 0,
+    limit: 20,
+  },
+};
+
 export const useHomeLogic = () => {
-  const { songs, refetchSongs } = useSongs({
-    search: '',
-    sort: { order: 'ASC' },
-    pagination: {
-      offset: 0,
-      limit: 10,
-    },
-  });
+  const { songs, refetchSongs } = useSongs(defaultVariables);
 
   const handleSearch = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
       const input = event.target as HTMLInputElement;
-      if (input.value.length === 1) {
-        void refetchSongs({
-          search: '',
-          sort: { order: 'ASC' },
-          pagination: {
-            offset: 0,
-            limit: 10,
-          },
-        });
-      }
 
       if (['Enter', 'NumpadEnter'].includes(event.code)) {
         void refetchSongs({
+          ...defaultVariables,
           search: input.value,
-          sort: { order: 'ASC' },
-          pagination: {
-            offset: 0,
-            limit: 10,
-          },
         });
       }
     },
