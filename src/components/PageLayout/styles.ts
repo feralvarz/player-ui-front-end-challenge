@@ -16,15 +16,14 @@ export const Main = styled.main`
   justify-content: center;
   width: 100%;
   padding-inline: 2.5rem;
-  overflow-y: auto;
+  overflow: hidden;
   max-height: 100%;
 
-  ${from['tabletLandscape']} {
+  ${from['laptop']} {
     padding-inline: 6rem;
   }
 `;
 
 export const ContentWrapper = styled.div`
   width: 100%;
-  max-width: 64rem;
 `;

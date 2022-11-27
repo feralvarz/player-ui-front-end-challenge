@@ -5,7 +5,7 @@ type ClientOnlyProps = {
 };
 
 const ClientOnly: FC<ClientOnlyProps> = (props) => {
-  const { children, ...delegated } = props;
+  const { children } = props;
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const ClientOnly: FC<ClientOnlyProps> = (props) => {
     return null;
   }
 
-  return <div {...delegated}>{children}</div>;
+  return <>{children}</>;
 };
 
 export default ClientOnly;
