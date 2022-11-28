@@ -17,7 +17,7 @@ import {
 } from './styles';
 
 export const HomeView: FC = () => {
-  const { $tracks, handlers } = useHomeLogic();
+  const { $tracks, handlers, showNoResults } = useHomeLogic();
 
   return (
     <Container id="Home-container">
@@ -38,7 +38,7 @@ export const HomeView: FC = () => {
           {$tracks.length > 0 ? 'Featured songs' : 'No results found'}
         </Text>
 
-        {$tracks.length === 0 && (
+        {showNoResults && (
           <>
             <Separator px spaceBlockStart="16" />
             <Text tag="p" variant="body">

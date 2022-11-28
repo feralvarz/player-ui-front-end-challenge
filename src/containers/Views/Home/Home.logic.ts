@@ -1,7 +1,7 @@
 import { SongsQueryVariables, useSongs } from '$/apollo/hooks/useSongs';
-import { tracks } from '$/apollo/state/songs.vars';
+import { favorites, tracks } from '$/apollo/state/songs.vars';
 import { useReactiveVar } from '@apollo/client';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { KeyboardEvent } from 'react';
 
 const defaultVariables: SongsQueryVariables = {
@@ -14,8 +14,14 @@ const defaultVariables: SongsQueryVariables = {
 };
 
 export const useHomeLogic = () => {
-  const { refetchSongs } = useSongs(defaultVariables);
+  const { refetchSongs, songsLoading } = useSongs(defaultVariables);
   const $tracks = useReactiveVar(tracks);
+
+  useEffect(() => {
+    const lsFavs = window.localStorage.getItem('favTracks');
+    const initialFavs = lsFavs !== null ? (JSON.parse(lsFavs) as number[]) : [];
+    favorites(initialFavs);
+  }, []);
 
   const handleSearch = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
@@ -40,6 +46,7 @@ export const useHomeLogic = () => {
 
   return {
     $tracks,
+    showNoResults: !songsLoading && $tracks.length === 0,
     handlers: { handleSearch, handleNoResults },
   };
 };

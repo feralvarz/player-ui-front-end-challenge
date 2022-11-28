@@ -24,12 +24,14 @@ export const useSongLogic = ({ song, index }: SongItemProps) => {
 
   const handleToggleFavorite = useCallback(() => {
     const songId = song.id;
+    let update = [];
     if ($favorites.includes(songId)) {
-      const update = $favorites.filter((favId) => favId !== songId);
-      favorites(update);
+      update = $favorites.filter((favId) => favId !== songId);
     } else {
-      favorites([...$favorites, songId]);
+      update = [...$favorites, songId];
     }
+    window.localStorage.setItem('favTracks', JSON.stringify(update));
+    favorites(update);
   }, [$favorites, song]);
 
   return {
