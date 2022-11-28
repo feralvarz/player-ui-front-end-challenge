@@ -26,11 +26,11 @@ export const PlayerContainer = styled.div`
 const ShowPlayer = css`
   ${PlayerContainer} {
     bottom: 0;
-    transition: bottom 100ms linear;
+    transition: bottom 100ms ease-out;
     /* Transition for player controls on mouse enter */
     & > * {
       opacity: 1;
-      transition: opacity 250ms linear 150ms;
+      transition: opacity 50ms linear 100ms;
     }
   }
 `;

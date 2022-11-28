@@ -14,38 +14,35 @@ import {
 } from './Player.styles';
 import { PlayerProps } from './Player.types';
 
-const Player: FC<PlayerProps> = ({ activeTrack }) => {
-  const { audioMeta, autoHide, handlers, isPlaying, setIsPlaying } = usePlayer({
-    activeTrack,
+const Player: FC<PlayerProps> = ({ tracks }) => {
+  const { track, autoHide, handlers, playing } = usePlayer({
+    tracks,
   });
 
   return (
     <HoverTrap active={autoHide}>
       <PlayerContainer>
         <TrackThumbnail
-          trackName={activeTrack.data.name}
-          artist={activeTrack.data.author.name}
-          image={activeTrack.data.image}
+          trackName={track.name}
+          artist={track.author.name}
+          image={track.image}
         />
         <PlayerControls>
           <Control
             onClick={() => handlers.handleRestartTime()}
-            onDoubleClick={() => console.log('Go to previous song')}
+            onDoubleClick={handlers.handlePrevious}
           >
             <Previous />
           </Control>
-          <Control solid onClick={() => setIsPlaying((play) => !play)}>
-            {isPlaying && <Pause />}
-            {!isPlaying && <Play />}
+          <Control solid onClick={handlers.handleTogglePlay}>
+            {playing && <Pause />}
+            {!playing && <Play />}
           </Control>
-          <Control flip onClick={() => console.log('Go to Next song')}>
+          <Control flip onClick={handlers.handleNext}>
             <Previous />
           </Control>
         </PlayerControls>
-        <TrackProgress
-          trackStatus={audioMeta}
-          onSlideChange={handlers.updateCurrentTime}
-        />
+        <TrackProgress onSlideChange={handlers.handleUpdateCurrentTime} />
       </PlayerContainer>
     </HoverTrap>
   );

@@ -26,6 +26,11 @@ export type ActiveTrackInfo = {
   index: number;
 };
 
+export type PlayerStatus = {
+  playing: boolean;
+  index: number;
+};
+
 export enum Genre {
   TWO_STEP = 'Two Step',
   FOUR_BEAT = 'Four Beat',

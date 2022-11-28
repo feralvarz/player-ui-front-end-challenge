@@ -1,84 +1,128 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  activeTrack,
+  audioMeta,
+  playerStatus,
+} from '$/apollo/state/songs.vars';
+import { Song } from '$/models/Song/Song.types';
+import { useReactiveVar } from '@apollo/client';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { AudioMeta, PlayerProps } from './Player.types';
+import { PlayerProps } from './Player.types';
+import { getNextIndex, getPrevIndex } from './Player.utils';
 
-export const usePlayer = ({ activeTrack }: PlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+export const usePlayer = ({ tracks }: PlayerProps) => {
+  const [trackReady, setTrackReady] = useState(false);
   const [autoHide, setAutoHide] = useState(false);
-  const [audioMeta, setAudioMeta] = useState<AudioMeta>({
-    current: 0,
-    duration: 0,
-  });
 
-  const audioPlayerRef = useRef(new Audio(activeTrack.data.audio.url));
+  const $playerStatus = useReactiveVar(playerStatus);
+  const { playing, index } = $playerStatus;
 
-  const handleOnUpdateTime = useCallback(() => {
-    if (audioPlayerRef.current) {
-      return setAudioMeta((meta) => ({
-        ...meta,
-        current: audioPlayerRef.current?.currentTime || 0,
-      }));
+  const track = useMemo(() => {
+    const result = (tracks[$playerStatus.index] as Song) || null;
+    // Sometimes, after a search tracks & index doesn't match.
+    // in this case we're going to keep playing from stored state.
+    if (!result) {
+      return activeTrack();
     }
+    return result;
+  }, [tracks, $playerStatus]);
+
+  const audioPlayerRef = useRef(new Audio(track?.audio.url));
+
+  const handleTogglePlay = useCallback(() => {
+    playerStatus({
+      ...playerStatus(),
+      playing: !playerStatus().playing,
+    });
   }, []);
 
-  const updateSongActions = useCallback(() => {
-    const { duration } = audioPlayerRef.current;
+  const handlePrevious = useCallback(() => {
+    const newIndex = getPrevIndex(tracks, index);
 
-    setAudioMeta({
-      current: 0,
-      duration: duration,
+    playerStatus({
+      playing: true,
+      index: newIndex,
     });
-    setIsPlaying(activeTrack.data.playing);
-  }, [activeTrack]);
+  }, [index, tracks]);
 
-  useEffect(() => {
-    audioPlayerRef.current.pause();
-    audioPlayerRef.current.preload = 'metadata';
-    audioPlayerRef.current = new Audio(activeTrack.data.audio.url);
-    audioPlayerRef.current.addEventListener(
-      'loadedmetadata',
-      updateSongActions,
-    );
+  const handleNext = useCallback(() => {
+    const newIndex = getNextIndex(tracks, index);
 
-    audioPlayerRef.current.addEventListener('timeupdate', handleOnUpdateTime);
+    playerStatus({
+      playing: true,
+      index: newIndex,
+    });
+  }, [index, tracks]);
 
-    return () => {
-      audioPlayerRef.current.removeEventListener(
-        'loadedmetadata',
-        updateSongActions,
-      );
-      audioPlayerRef.current.removeEventListener(
-        'timeupdate',
-        handleOnUpdateTime,
-      );
-    };
-  }, [activeTrack, updateSongActions, handleOnUpdateTime]);
-
-  const updateCurrentTime = useCallback(([progress]: [number]) => {
+  const handleUpdateCurrentTime = useCallback(([progress]: [number]) => {
     if (audioPlayerRef.current) {
       audioPlayerRef.current.currentTime = progress;
 
-      setAudioMeta((meta) => ({
-        ...meta,
+      const update = {
+        ...audioMeta(),
         current: audioPlayerRef.current?.currentTime || 0,
-      }));
+      };
+      audioMeta(update);
     }
   }, []);
 
   const handleRestartTime = useCallback(() => {
-    if (audioPlayerRef.current) {
-      audioPlayerRef.current.currentTime = 0;
-
-      return setAudioMeta((meta) => ({
-        ...meta,
-        current: 0,
-      }));
-    }
+    audioPlayerRef.current.currentTime = 0;
+    const update = {
+      ...audioMeta(),
+      current: 0,
+    };
+    audioMeta(update);
   }, []);
 
+  const handleOnTimeUpdate = useCallback(() => {
+    const update = {
+      ...audioMeta(),
+      current: audioPlayerRef.current?.currentTime || 0,
+    };
+
+    return audioMeta(update);
+  }, []);
+
+  const handleLoadedMetadata = useCallback(() => {
+    const { duration } = audioPlayerRef.current;
+
+    audioMeta({
+      current: 0,
+      duration: duration,
+    });
+    setTrackReady(true);
+  }, []);
+
+  // Main Actions after a global track index change
   useEffect(() => {
-    if (audioPlayerRef.current) {
-      if (isPlaying) {
+    setTrackReady(false);
+    audioPlayerRef.current.pause();
+    audioPlayerRef.current.preload = 'metadata';
+    audioPlayerRef.current = new Audio(track?.audio.url);
+    audioPlayerRef.current.addEventListener(
+      'loadedmetadata',
+      handleLoadedMetadata,
+    );
+
+    audioPlayerRef.current.addEventListener('timeupdate', handleOnTimeUpdate);
+
+    return () => {
+      audioPlayerRef.current.pause();
+      audioPlayerRef.current.removeEventListener(
+        'loadedmetadata',
+        handleLoadedMetadata,
+      );
+      audioPlayerRef.current.removeEventListener(
+        'timeupdate',
+        handleOnTimeUpdate,
+      );
+    };
+  }, [index, handleLoadedMetadata, handleOnTimeUpdate, track]);
+
+  useEffect(() => {
+    if (trackReady) {
+      if ($playerStatus.playing) {
         // Mark a promise as intentionally not awaited
         void audioPlayerRef.current.play();
 
@@ -91,18 +135,24 @@ export const usePlayer = ({ activeTrack }: PlayerProps) => {
         audioPlayerRef.current.pause();
       }
     }
-  }, [isPlaying]);
+
+    return () => {
+      audioPlayerRef.current.pause();
+    };
+  }, [trackReady, $playerStatus]);
 
   return {
-    audioMeta,
+    track,
     audioPlayerRef,
     autoHide,
-    isPlaying,
-    setIsPlaying,
+    playing,
     handlers: {
-      handleOnUpdateTime,
-      updateCurrentTime,
+      handleNext,
+      handleOnTimeUpdate,
+      handlePrevious,
       handleRestartTime,
+      handleTogglePlay,
+      handleUpdateCurrentTime,
     },
   };
 };

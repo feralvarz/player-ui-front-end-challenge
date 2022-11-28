@@ -16,7 +16,7 @@ import {
 } from './styles';
 
 export const HomeView: FC = () => {
-  const { songs, $activeTrack, handleSearch } = useHomeLogic();
+  const { songs, $tracks, handleSearch } = useHomeLogic();
 
   return (
     <Container id="Home-container">
@@ -47,7 +47,7 @@ export const HomeView: FC = () => {
           </SongsContainer>
         </SongsScrollContainer>
       </ClientOnly>
-      {$activeTrack && <Player activeTrack={$activeTrack} />}
+      {$tracks.length > 0 && <Player tracks={$tracks} />}
     </Container>
   );
 };

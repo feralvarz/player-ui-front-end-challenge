@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const SongsScrollContainer = styled.div`
   overflow-y: auto;
-  padding-bottom: 10rem;
+  padding-bottom: 100px;
   margin: 0 -2.5rem;
 
   ${from['laptop']} {

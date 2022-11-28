@@ -1,4 +1,5 @@
 import { SONGS_QUERY } from '$/apollo/queries/songs';
+import { tracks } from '$/apollo/state/songs.vars';
 import { Song } from '$/models/Song/Song.types';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';
@@ -32,6 +33,7 @@ export const useSongs = (input: SongsQueryVariables) => {
   });
 
   const normalizedSongs = useMemo(() => data?.songs.songs || [], [data]);
+  tracks(normalizedSongs);
 
   return {
     songs: normalizedSongs,

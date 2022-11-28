@@ -1,8 +1,19 @@
-import { ActiveTrackInfo, Song } from '$/models/Song/Song.types';
+import { AudioMeta } from '$/components/Player/Player.types';
+import { PlayerStatus, Song } from '$/models/Song/Song.types';
 import { makeVar } from '@apollo/client';
 
-export const activeTrack = makeVar<ActiveTrackInfo | null>(null);
-export const favorites = makeVar<number[]>([]);
+export const tracks = makeVar<Song[]>([]);
 
-//TODO: review this implementation
-export const tracksList = makeVar<Song[]>([]);
+export const playerStatus = makeVar<PlayerStatus>({
+  index: 0,
+  playing: false,
+});
+
+export const activeTrack = makeVar<Song | null>(null);
+
+export const audioMeta = makeVar<AudioMeta>({
+  current: 0,
+  duration: 0,
+});
+
+export const favorites = makeVar<number[]>([]);

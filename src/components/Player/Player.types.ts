@@ -1,4 +1,4 @@
-import { ActiveTrackInfo } from '$/models/Song/Song.types';
+import { Song } from '$/models/Song/Song.types';
 
 export type AudioMeta = {
   current: number;
@@ -6,5 +6,5 @@ export type AudioMeta = {
 };
 
 export type PlayerProps = {
-  activeTrack: ActiveTrackInfo;
+  tracks: Song[];
 };

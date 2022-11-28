@@ -1,24 +1,23 @@
-import { activeTrack, favorites } from '$/apollo/state/songs.vars';
+import {
+  activeTrack,
+  favorites,
+  playerStatus,
+} from '$/apollo/state/songs.vars';
 import { useReactiveVar } from '@apollo/client';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { SongItemProps } from './Song';
 
 export const useSongLogic = ({ song, index }: SongItemProps) => {
-  const $activeTrack = useReactiveVar(activeTrack);
+  const $playerStatus = useReactiveVar(playerStatus);
   const $favorites = useReactiveVar(favorites);
-
-  const isPlaying: boolean = useMemo(() => {
-    if ($activeTrack) {
-      return $activeTrack.data.id === song.id && $activeTrack.data.playing;
-    }
-
-    return false;
-  }, [$activeTrack, song]);
 
   const handleTogglePlayerAction = useCallback(
     (playing: boolean) => {
-      activeTrack({ data: { ...song, playing }, index });
+      if (playing) {
+        activeTrack(song);
+      }
+      playerStatus({ playing, index });
     },
     [song, index],
   );
@@ -34,7 +33,7 @@ export const useSongLogic = ({ song, index }: SongItemProps) => {
   }, [$favorites, song]);
 
   return {
-    isPlaying,
+    isPlaying: $playerStatus.index === index && $playerStatus.playing,
     favorite: $favorites.includes(song.id),
     handleTogglePlayerAction,
     handleToggleFavorite,
