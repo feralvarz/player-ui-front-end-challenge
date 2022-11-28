@@ -31,10 +31,10 @@ export const useSongs = (input: SongsQueryVariables) => {
     nextFetchPolicy: 'cache-only',
   });
 
-  const normalizeSong = useMemo(() => data?.songs.songs || [], [data]);
+  const normalizedSongs = useMemo(() => data?.songs.songs || [], [data]);
 
   return {
-    songs: normalizeSong,
+    songs: normalizedSongs,
     songsError,
     songsLoading,
     refetchSongs,

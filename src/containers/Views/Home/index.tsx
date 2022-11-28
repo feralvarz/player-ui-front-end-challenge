@@ -16,7 +16,7 @@ import {
 } from './styles';
 
 export const HomeView: FC = () => {
-  const { songs, handleSearch } = useHomeLogic();
+  const { songs, $activeTrack, handleSearch } = useHomeLogic();
 
   return (
     <Container id="Home-container">
@@ -41,12 +41,13 @@ export const HomeView: FC = () => {
               <SongItem
                 key={`${randomID({ label: 'track' })}-${index}`}
                 song={s}
+                index={index}
               />
             ))}
           </SongsContainer>
         </SongsScrollContainer>
       </ClientOnly>
-      <Player />
+      {$activeTrack && <Player activeTrack={$activeTrack} />}
     </Container>
   );
 };

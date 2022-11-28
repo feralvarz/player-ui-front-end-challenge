@@ -14,6 +14,18 @@ export type Song = {
   image: string;
 };
 
+export type SongWithMeta = { playing: boolean } & Song;
+
+export type SongPlayerEvent = {
+  action: 'play' | 'pause';
+  index: number;
+};
+
+export type ActiveTrackInfo = {
+  data: SongWithMeta;
+  index: number;
+};
+
 export enum Genre {
   TWO_STEP = 'Two Step',
   FOUR_BEAT = 'Four Beat',
