@@ -4,6 +4,7 @@ export const SongCard = styled.article`
   display: grid;
   gap: 32px;
   grid-template-columns: 140px 1fr;
+  user-select: none;
 `;
 
 export const AlbumArt = styled.picture<{ url: string }>`

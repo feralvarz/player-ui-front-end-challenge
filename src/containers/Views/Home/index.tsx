@@ -16,7 +16,7 @@ import {
 } from './styles';
 
 export const HomeView: FC = () => {
-  const { songs, $tracks, handleSearch } = useHomeLogic();
+  const { $tracks, handlers } = useHomeLogic();
 
   return (
     <Container id="Home-container">
@@ -27,17 +27,29 @@ export const HomeView: FC = () => {
         <SearchInput
           name="search-term-input"
           placeholder="Search by title, genre..."
-          onKeyUp={handleSearch}
+          onKeyUp={handlers.handleSearch}
         />
         <Separator px spaceBlockStart="40" />
         <Text tag="h2" variant="title2">
-          Featured songs
+          {$tracks.length > 0 ? 'Featured songs' : 'No results found'}
         </Text>
+
+        {$tracks.length === 0 && (
+          <>
+            <Separator px spaceBlockStart="16" />
+            <Text tag="p" variant="body">
+              Please make sure your words are spelled correctly or{' '}
+              <a className="cta-link" onClick={handlers.handleNoResults}>
+                restore results
+              </a>
+            </Text>
+          </>
+        )}
       </SongsHeader>
       <ClientOnly>
         <SongsScrollContainer role="scrollbar">
           <SongsContainer>
-            {songs.map((s, index) => (
+            {$tracks.map((s, index) => (
               <SongItem
                 key={`${randomID({ label: 'track' })}-${index}`}
                 song={s}

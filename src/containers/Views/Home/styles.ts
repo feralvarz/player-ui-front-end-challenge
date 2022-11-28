@@ -6,6 +6,12 @@ export const Container = styled.div`
   display: grid;
   height: 100%;
   grid-template-rows: auto 1fr;
+  .cta-link {
+    color: ${({ theme }) => theme.color.malibu500};
+    cursor: pointer;
+    font-weight: ${({ theme }) => theme.weight.bold};
+    text-decoration: underline;
+  }
 `;
 
 export const SongsScrollContainer = styled.div`

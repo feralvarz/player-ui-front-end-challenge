@@ -14,7 +14,7 @@ const defaultVariables: SongsQueryVariables = {
 };
 
 export const useHomeLogic = () => {
-  const { songs, refetchSongs } = useSongs(defaultVariables);
+  const { refetchSongs } = useSongs(defaultVariables);
   const $tracks = useReactiveVar(tracks);
 
   const handleSearch = useCallback(
@@ -31,9 +31,15 @@ export const useHomeLogic = () => {
     [refetchSongs],
   );
 
+  const handleNoResults = useCallback(() => {
+    void refetchSongs({
+      ...defaultVariables,
+      search: '',
+    });
+  }, [refetchSongs]);
+
   return {
-    songs,
     $tracks,
-    handleSearch,
+    handlers: { handleSearch, handleNoResults },
   };
 };
