@@ -19,6 +19,10 @@ const Player: FC<PlayerProps> = ({ tracks }) => {
     tracks,
   });
 
+  if (!track) {
+    return null;
+  }
+
   return (
     <HoverTrap active={autoHide}>
       <PlayerContainer>

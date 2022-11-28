@@ -4,6 +4,7 @@ import { Separator } from '$/components/Separator';
 import { SongItem } from '$/components/Song/Song';
 import { Text } from '$/components/Text';
 import { randomID } from '$/utils/randomId/randomId';
+import Head from 'next/head';
 import { FC } from 'react';
 
 import { useHomeLogic } from './Home.logic';
@@ -20,6 +21,9 @@ export const HomeView: FC = () => {
 
   return (
     <Container id="Home-container">
+      <Head>
+        <title>Z1 Player - Explore</title>
+      </Head>
       <SongsHeader>
         <Text tag="h1" variant="title1">
           Explore
